@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>30-Day PM Challenge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<style>
+:root {
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --color-text-primary: #111827;
+  --color-text-secondary: #6b7280;
+  --color-background-primary: #ffffff;
+  --color-background-secondary: #f9fafb;
+  --color-border-secondary: #e5e7eb;
+  --color-border-tertiary: #f3f4f6;
+  --border-radius-lg: 12px;
+  --border-radius-md: 8px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-sans);
+  background: #f5f5f4;
+  color: var(--color-text-primary);
+  min-height: 100vh;
+}
+
+/* ── Hero banner ── */
+.hero {
+  background: #111827;
+  color: #f9fafb;
+  padding: 56px 24px 52px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 39px,
+    rgba(255,255,255,0.03) 39px,
+    rgba(255,255,255,0.03) 40px
+  ),
+  repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 39px,
+    rgba(255,255,255,0.03) 39px,
+    rgba(255,255,255,0.03) 40px
+  );
+  pointer-events: none;
+}
+
+.hero-eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #9ca3af;
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.hero-eyebrow span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hero-eyebrow span::before,
+.hero-eyebrow span::after {
+  content: '';
+  display: block;
+  width: 32px;
+  height: 1px;
+  background: #374151;
+}
+
+.hero-title {
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: #f9fafb;
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.hero-title em {
+  font-style: normal;
+  color: #d1fae5;
+}
+
+.hero-sub {
+  font-size: 16px;
+  color: #9ca3af;
+  max-width: 480px;
+  margin: 0 auto 28px;
+  line-height: 1.6;
+  position: relative;
+}
+
+.hero-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-size: 13px;
+  color: #d1d5db;
+  position: relative;
+}
+
+.hero-dot {
+  width: 7px;
+  height: 7px;
+  background: #1D9E75;
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.85); }
+}
+
+/* ── Container ── */
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 32px 16px 64px;
+}
+
+/* ── Existing roadmap styles ── */
+.root { padding: 0; font-family: var(--font-sans); }
+h2.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+.week-nav { display: flex; gap: 8px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.wbtn {
+  padding: 7px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--color-border-secondary);
+  background: var(--color-background-primary);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  font-size: 13px;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  transition: all 0.15s;
+}
+.wbtn:hover { border-color: #9ca3af; color: var(--color-text-primary); }
+.wbtn.active {
+  background: var(--color-text-primary);
+  color: #ffffff;
+  border-color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+.week-header { margin-bottom: 1.25rem; }
+.week-title { font-size: 20px; font-weight: 600; color: var(--color-text-primary); letter-spacing: -0.01em; }
+.week-sub { font-size: 14px; color: var(--color-text-secondary); margin-top: 4px; line-height: 1.5; }
+.week-theme {
+  display: inline-flex; align-items: center; gap: 6px; margin-top: 10px;
+  padding: 5px 12px; border-radius: 999px; font-size: 12px; font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.days-grid { display: flex; flex-direction: column; gap: 8px; }
+
+.day-card {
+  border: 1px solid var(--color-border-secondary);
+  border-radius: var(--border-radius-lg);
+  background: var(--color-background-primary);
+  overflow: hidden;
+  cursor: pointer;
+  transition: box-shadow 0.15s, border-color 0.15s;
+}
+.day-card:hover { border-color: #d1d5db; box-shadow: 0 1px 6px rgba(0,0,0,0.06); }
+.day-card.rest { opacity: 0.75; }
+
+.day-top { display: flex; align-items: center; gap: 12px; padding: 14px 16px; }
+.day-num {
+  width: 36px; height: 36px; border-radius: var(--border-radius-md);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 600; flex-shrink: 0;
+}
+.day-info { flex: 1; min-width: 0; }
+.day-label { font-size: 14px; font-weight: 500; color: var(--color-text-primary); line-height: 1.4; }
+.day-focus { font-size: 12px; color: var(--color-text-secondary); margin-top: 2px; }
+.day-tag {
+  font-size: 11px; padding: 3px 9px; border-radius: 999px;
+  font-weight: 600; white-space: nowrap; flex-shrink: 0;
+}
+.day-chevron { color: var(--color-text-secondary); font-size: 15px; transition: transform 0.2s; flex-shrink: 0; }
+
+.day-detail {
+  display: none;
+  border-top: 1px solid var(--color-border-tertiary);
+  padding: 14px 16px 14px calc(36px + 12px + 16px);
+}
+.day-detail.open { display: block; }
+
+.detail-section { margin-bottom: 12px; }
+.detail-label {
+  font-size: 10px; font-weight: 700; color: var(--color-text-secondary);
+  text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px;
+}
+.detail-list { list-style: none; }
+.detail-list li {
+  font-size: 13px; color: var(--color-text-primary);
+  padding: 3px 0 3px 16px; position: relative; line-height: 1.55;
+}
+.detail-list li::before {
+  content: '→'; position: absolute; left: 0;
+  color: var(--color-text-secondary); font-size: 11px; top: 5px;
+}
+
+.task-chip {
+  background: #f0fdf7;
+  border-radius: var(--border-radius-md);
+  padding: 10px 12px;
+  border-left: 3px solid #1D9E75;
+  margin-top: 4px;
+}
+.task-chip-label {
+  font-size: 10px; font-weight: 700; color: #0F6E56;
+  text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px;
+}
+.task-chip-text { font-size: 13px; color: var(--color-text-primary); line-height: 1.5; }
+
+.rest-card {
+  border: 1px dashed var(--color-border-secondary);
+  border-radius: var(--border-radius-lg);
+  padding: 14px 16px;
+  display: flex; align-items: flex-start; gap: 12px;
+  background: var(--color-background-secondary);
+}
+.rest-icon {
+  width: 36px; height: 36px; border-radius: var(--border-radius-md);
+  background: var(--color-background-primary);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  border: 1px solid var(--color-border-tertiary);
+}
+.rest-text { font-size: 13px; color: var(--color-text-secondary); line-height: 1.55; }
+
+.progress-wrap {
+  background: var(--color-background-primary);
+  border: 1px solid var(--color-border-secondary);
+  border-radius: var(--border-radius-lg);
+  padding: 16px 18px;
+  margin-bottom: 20px;
+}
+.prog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.prog-title { font-size: 14px; font-weight: 600; color: var(--color-text-primary); }
+.prog-count { font-size: 13px; color: var(--color-text-secondary); }
+.prog-track {
+  background: var(--color-background-secondary);
+  border-radius: 999px; height: 6px; overflow: hidden;
+}
+.prog-fill { height: 6px; border-radius: 999px; background: #1D9E75; transition: width 0.4s ease; }
+.prog-label { font-size: 12px; color: var(--color-text-secondary); margin-top: 6px; }
+
+.check-row {
+  display: flex; align-items: center; gap: 8px;
+  margin-top: 10px; padding-top: 10px;
+  border-top: 1px solid var(--color-border-tertiary);
+}
+.check-box {
+  width: 18px; height: 18px; border: 1.5px solid var(--color-border-secondary);
+  border-radius: 4px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.15s;
+}
+.check-box:hover { border-color: #1D9E75; }
+.check-box.done { background: #1D9E75; border-color: #1D9E75; }
+.check-box.done::after { content: '✓'; color: white; font-size: 10px; font-weight: 700; }
+.check-text { font-size: 12px; color: var(--color-text-secondary); }
+
+.milestone {
+  border: 1px solid var(--color-border-secondary);
+  border-radius: var(--border-radius-lg);
+  padding: 14px 16px;
+  background: var(--color-background-secondary);
+  display: flex; align-items: center; gap: 12px; margin-top: 4px;
+}
+.ms-icon {
+  width: 36px; height: 36px; border-radius: var(--border-radius-md);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-size: 18px;
+}
+.ms-text { font-size: 13px; color: var(--color-text-primary); font-weight: 500; }
+.ms-sub { font-size: 12px; color: var(--color-text-secondary); margin-top: 2px; }
+
+/* ── Footer ── */
+footer {
+  text-align: center;
+  padding: 24px;
+  font-size: 12px;
+  color: #9ca3af;
+  border-top: 1px solid #e5e7eb;
+  background: #f9fafb;
+}
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<header class="hero">
+  <p class="hero-eyebrow"><span>Public Commitment</span></p>
+  <h1 class="hero-title">30 Days Challenge<br><em>I Am Going To Take</em></h1>
+  <p class="hero-sub">Breaking into Product Management — one day, one concept, one task at a time. No skipping.</p>
+  <div class="hero-meta">
+    <span class="hero-dot"></span>
+    Started May 28, 2026 &nbsp;·&nbsp; 30 days &nbsp;·&nbsp; PM Internship prep
+  </div>
+</header>
+
+<!-- Roadmap -->
+<main class="container">
+  <div class="root">
+    <h2 class="sr-only">30-day PM internship preparation roadmap organized by week</h2>
+
+    <div class="progress-wrap">
+      <div class="prog-header">
+        <span class="prog-title">Your 30-day PM roadmap</span>
+        <span class="prog-count" id="prog-label">0 / 30</span>
+      </div>
+      <div class="prog-track"><div class="prog-fill" id="prog" style="width:0%"></div></div>
+    </div>
+
+    <div class="week-nav">
+      <button class="wbtn active" onclick="showWeek(1,this)">Week 1</button>
+      <button class="wbtn" onclick="showWeek(2,this)">Week 2</button>
+      <button class="wbtn" onclick="showWeek(3,this)">Week 3</button>
+      <button class="wbtn" onclick="showWeek(4,this)">Week 4</button>
+    </div>
+
+    <div id="week-content"></div>
+  </div>
+</main>
+
+<footer>
+  30-Day PM Challenge &nbsp;·&nbsp; Built in public &nbsp;·&nbsp; nepnpc@gmail.com
+</footer>
+
+<script>
+const WEEKS = [
+  {
+    n:1,
+    title:"Week 1 — think like a PM",
+    sub:"You don't know what a PM really does yet. This week changes that.",
+    theme:"Foundation",
+    themeColor:"#E1F5EE",
+    themeText:"#0F6E56",
+    themeIcon:"ti-seedling",
+    days:[
+      {
+        d:1,label:"What does a PM actually do all day?",
+        skill:"Product strategy",
+        color:"#E1F5EE",textColor:"#0F6E56",
+        focus:"Understand the role before anything else",
+        study:["PM is not a boss — it's a quarterback. Study the difference.","Read 3 real PM job descriptions from Nepali or Indian startups","Watch one PM talk about their actual workday (YouTube)","Understand: strategy vs execution vs communication"],
+        task:"Write 5 sentences: what a PM does and does not do. In your own words."
+      },
+      {
+        d:2,label:"What is product strategy and how is it different from a roadmap?",
+        skill:"Product strategy",
+        color:"#E1F5EE",textColor:"#0F6E56",
+        focus:"Strategy vs execution vs planning",
+        study:["What is a product vision?","How does strategy connect to company mission?","What is a product roadmap format (now/next/later)?","What does a bad strategy look like?"],
+        task:"Write a 1-page strategy for a fictional grocery delivery app in Kathmandu."
+      },
+      {
+        d:3,label:"What is product-market fit and how do you find it?",
+        skill:"Product strategy",
+        color:"#E1F5EE",textColor:"#0F6E56",
+        focus:"PMF signals and the Sean Ellis test",
+        study:["The 40% rule — what is it?","Qualitative PMF signals vs quantitative","How does PMF look different for B2B vs B2C?","What do you do when you don't have PMF?"],
+        task:"Analyze one Nepali app — do you think it has PMF? Write your reasoning."
+      },
+      {
+        d:4,label:"What are Jobs to Be Done (JTBD)?",
+        skill:"Product strategy",
+        color:"#E1F5EE",textColor:"#0F6E56",
+        focus:"Framework for understanding real user motivation",
+        study:["Functional vs emotional vs social jobs","The JTBD interview format","How JTBD differs from personas","Real example: what job does Pathao actually do?"],
+        task:"Interview one person. Write their JTBD statement: 'When I ___, I want to ___, so I can ___'."
+      },
+      {
+        d:5,label:"What is user research and why does it make or break products?",
+        skill:"User research",
+        color:"#E6F1FB",textColor:"#185FA5",
+        focus:"Research types and when to use each",
+        study:["Qualitative vs quantitative research","Generative vs evaluative research","What is a usability test?","When does a survey mislead you?"],
+        task:"Design a research plan for a school fee payment app. Pick one method and justify it."
+      },
+      {
+        d:6,label:"How do you run a user interview that gives real insight?",
+        skill:"User research",
+        color:"#E6F1FB",textColor:"#185FA5",
+        focus:"Interview technique and bias avoidance",
+        study:["Open vs closed questions","How to avoid leading the user","The five whys technique","How to synthesize 10 interviews into one insight"],
+        task:"Write a 10-question interview script for a food delivery app user. Every question must be open-ended."
+      },
+      {
+        d:7,label:"Rest & review day",
+        rest:true,
+        restNote:"Review everything from days 1–6. Redo any task you skimmed. Write 5 questions you still can't answer — those are your gaps."
+      }
+    ]
+  },
+  {
+    n:2,
+    title:"Week 2 — frameworks & thinking tools",
+    sub:"The mental models PMs use every day. Internalize them, don't just memorize.",
+    theme:"Frameworks",
+    themeColor:"#FAEEDA",
+    themeText:"#854F0B",
+    themeIcon:"ti-tools",
+    days:[
+      {
+        d:8,label:"What are user personas and journey maps?",
+        skill:"User research",
+        color:"#E6F1FB",textColor:"#185FA5",
+        focus:"Personas vs real user data + journey mapping",
+        study:["What goes inside a persona?","When do personas mislead PMs?","Stages of a journey map","How to find opportunities inside a journey map"],
+        task:"Build a journey map for someone buying medicine online in Nepal. Mark the #1 pain point."
+      },
+      {
+        d:9,label:"What is the RICE prioritization framework?",
+        skill:"Prioritization",
+        color:"#FAEEDA",textColor:"#854F0B",
+        focus:"Reach, Impact, Confidence, Effort scoring",
+        study:["How to score each RICE dimension","The RICE formula and how to calculate it","When RICE gives you the wrong answer","What frameworks replace RICE in different contexts?"],
+        task:"Score 3 fake features using RICE. Justify every number out loud."
+      },
+      {
+        d:10,label:"What is MoSCoW and the opportunity solution tree?",
+        skill:"Prioritization",
+        color:"#FAEEDA",textColor:"#854F0B",
+        focus:"Two frameworks for scoping and decision-making",
+        study:["Must/Should/Could/Won't and how to assign features","Danger of too many Must Haves","Opportunity solution tree — outcomes vs opportunities vs solutions","How to avoid jumping to solutions too fast"],
+        task:"Build an OST for 'students in Nepal struggle to find tutors'. Start with one measurable outcome."
+      },
+      {
+        d:11,label:"How do you say no to a feature without burning a relationship?",
+        skill:"Prioritization",
+        color:"#FAEEDA",textColor:"#854F0B",
+        focus:"Stakeholder prioritization conflicts",
+        study:["Impact vs effort 2x2 matrix","Using data to depoliticize priority fights","Now/next/later roadmap format","Saying no with a reason, not just a refusal"],
+        task:"Write a 3-minute conversation script declining a VP's feature request. Use data, not opinion."
+      },
+      {
+        d:12,label:"What is a North Star Metric and how do you choose one?",
+        skill:"Metrics",
+        color:"#EEEDFE",textColor:"#534AB7",
+        focus:"The one metric that captures real product value",
+        study:["NSM vs KPI — what is the difference?","What makes a bad North Star?","Input metrics that feed a North Star","What are Airbnb's, Duolingo's, and Spotify's NSMs?"],
+        task:"Define the NSM for a Nepali telemedicine app. Write 3 input metrics that drive it."
+      },
+      {
+        d:13,label:"What is AARRR and how do you measure each stage?",
+        skill:"Metrics",
+        color:"#EEEDFE",textColor:"#534AB7",
+        focus:"Funnel thinking for product growth",
+        study:["Acquisition, Activation, Retention, Referral, Revenue","How to measure each stage","Where most early products leak","AARRR vs HEART framework"],
+        task:"Map AARRR for a job board for Nepal. Write 1 real metric per stage with how you'd measure it."
+      },
+      {
+        d:14,label:"Rest & milestone day",
+        rest:true,
+        milestone:true,
+        restNote:"Milestone: can you explain RICE, North Star, and JTBD to a non-PM friend in plain language without notes? If yes — you're on track."
+      }
+    ]
+  },
+  {
+    n:3,
+    title:"Week 3 — technical depth & execution",
+    sub:"This is what makes you a technical PM, not just a PM.",
+    theme:"Technical",
+    themeColor:"#EAF3DE",
+    themeText:"#3B6D11",
+    themeIcon:"ti-cpu",
+    days:[
+      {
+        d:15,label:"What is an API and why does every PM need to understand it?",
+        skill:"Technical literacy",
+        color:"#EAF3DE",textColor:"#3B6D11",
+        focus:"APIs, endpoints, status codes — PM-level understanding",
+        study:["REST vs GraphQL — what to know as a PM","Request, response, endpoint, status code in plain terms","How to read API documentation","Rate limiting and why product decisions affect it"],
+        task:"Read one free API's documentation (e.g. OpenWeatherMap). Write what a PM needs to know before building with it."
+      },
+      {
+        d:16,label:"What does a PM need to know about databases?",
+        skill:"Technical literacy",
+        color:"#EAF3DE",textColor:"#3B6D11",
+        focus:"SQL vs NoSQL, schema, queries — just enough to talk to engineers",
+        study:["SQL vs NoSQL — when to use which","What is a query and what makes a bad one slow?","Why does PM input on data schema matter?","Data warehouse vs production database"],
+        task:"You want 'search by hospital name' in a health app. Explain to an engineer what data needs storing and why."
+      },
+      {
+        d:17,label:"What is system design at the level a PM must understand?",
+        skill:"Technical literacy",
+        color:"#EAF3DE",textColor:"#3B6D11",
+        focus:"Monolith, microservices, CDN, latency — vocabulary that earns trust",
+        study:["Monolith vs microservices — tradeoffs","What is a load balancer?","CDN and what product problems it solves","Latency vs throughput and how they affect UX"],
+        task:"Explain in plain language why a video streaming feature might buffer. Name 3 technical causes."
+      },
+      {
+        d:18,label:"What does a PM need to understand about AI/ML products?",
+        skill:"Technical literacy",
+        color:"#EAF3DE",textColor:"#3B6D11",
+        focus:"AI product intuition — training data, inference, hallucination, RAG",
+        study:["Training data and why data quality = product quality","What is model inference and latency?","What is hallucination and how does it affect user trust?","What is RAG?","How do you evaluate an AI feature before shipping?"],
+        task:"You're adding an AI chatbot to a Nepali banking app. Write 5 edge cases the team must test before launch."
+      },
+      {
+        d:19,label:"What is agile and how does a PM operate inside a scrum team?",
+        skill:"Execution",
+        color:"#FCEBEB",textColor:"#A32D2D",
+        focus:"Sprint, backlog, planning, standups — PM's actual daily workflow",
+        study:["Sprint definition and length","Backlog ownership — PM vs scrum master","Sprint planning, standup, retro — PM's role in each","What is velocity and why it can mislead you?"],
+        task:"Write a 5-item sprint backlog for a payments feature. Include acceptance criteria for every item."
+      },
+      {
+        d:20,label:"What is a PRD and how do you write one?",
+        skill:"Execution",
+        color:"#FCEBEB",textColor:"#A32D2D",
+        focus:"The core PM writing deliverable",
+        study:["Sections every PRD must have","How detailed a PRD should be for small vs large teams","PRD vs user story — what is the difference?","User story format: as a ___, I want ___, so that ___"],
+        task:"Write a 1-page PRD for a 'split bill' feature in a payment app. Include: problem, users, requirements, out-of-scope."
+      },
+      {
+        d:21,label:"Rest & portfolio day",
+        rest:true,
+        restNote:"Spend today building one thing from scratch: a product teardown of any Nepali app. This is your first portfolio piece. Write it like you'd show it in an interview."
+      }
+    ]
+  },
+  {
+    n:4,
+    title:"Week 4 — land the room",
+    sub:"Stop studying. Start applying, talking, and proving you can do this.",
+    theme:"Application",
+    themeColor:"#FBEAF0",
+    themeText:"#993556",
+    themeIcon:"ti-rocket",
+    days:[
+      {
+        d:22,label:"What is a business model and how does it shape product decisions?",
+        skill:"Business sense",
+        color:"#F1EFE8",textColor:"#5F5E5A",
+        focus:"SaaS, marketplace, freemium — and how they constrain what you build",
+        study:["LTV and CAC — plain definitions","How does a PM decision affect unit economics?","What is gross margin and why does it constrain features?","Pick a Nepali startup and map their model"],
+        task:"Pick any Nepali startup. Write their business model in 3 sentences. What product decisions does that model force?"
+      },
+      {
+        d:23,label:"How do you do a competitive analysis as a PM?",
+        skill:"Business sense",
+        color:"#F1EFE8",textColor:"#5F5E5A",
+        focus:"Competitive matrix, direct vs indirect, market gaps",
+        study:["What is a competitive matrix?","Direct vs indirect competitors","Porter's Five Forces at a high level","How do you find gaps from a competitive analysis?"],
+        task:"Do a competitive analysis of ride-hailing in Nepal. Compare 2–3 players on 5 dimensions. Find one unserved gap."
+      },
+      {
+        d:24,label:"How do you evaluate whether a product idea is worth building?",
+        skill:"Business sense",
+        color:"#F1EFE8",textColor:"#5F5E5A",
+        focus:"TAM/SAM/SOM, validation before building, concierge MVP",
+        study:["TAM, SAM, SOM — what do they measure?","How to validate demand before writing code","What is a concierge MVP?","What is an assumption map?"],
+        task:"Evaluate this idea: 'An app connecting trekkers in Nepal with local guides.' Use TAM/SAM/SOM + one validation method."
+      },
+      {
+        d:25,label:"How do you write a product brief that gets buy-in?",
+        skill:"Communication",
+        color:"#FBEAF0",textColor:"#993556",
+        focus:"Executive communication — clear, short, decisive",
+        study:["What is SCQA (Situation, Complication, Question, Answer)?","How to structure a recommendation: problem → options → recommendation","Tailoring communication for engineers vs executives","How short is too short for an executive summary?"],
+        task:"Write a 150-word product brief proposing dark mode to a CEO who didn't ask for it."
+      },
+      {
+        d:26,label:"Cold outreach + application day",
+        skill:"Communication",
+        color:"#FBEAF0",textColor:"#993556",
+        focus:"Find real internships and reach real people",
+        study:["Find 5 Nepali/remote startups hiring interns","Write 3 cold LinkedIn messages to PMs or founders","Research the company's product before reaching out","What does a PM intern portfolio need to show?"],
+        task:"Send at least 2 real outreach messages today. Not tomorrow. Today."
+      },
+      {
+        d:27,label:"PM interview simulation day",
+        skill:"Communication",
+        color:"#FBEAF0",textColor:"#993556",
+        focus:"Practice until it feels boring",
+        study:["How to answer 'how would you improve X product?'","Structured answer format: problem → user → insight → solution → metric","How to handle 'I don't know' in an interview","What makes a PM interview answer bad?"],
+        task:"Record yourself answering: 'How would you improve eSewa?' out loud. Watch it back. Cringe. Improve."
+      },
+      {
+        d:28,label:"A/B testing and metric diagnosis",
+        skill:"Metrics",
+        color:"#EEEDFE",textColor:"#534AB7",
+        focus:"Two skills that come up in every PM interview",
+        study:["Control vs treatment group","Statistical significance in plain language","What makes an A/B test invalid?","How to diagnose a metric that suddenly dropped"],
+        task:"DAU dropped 20% on a Tuesday. Write a 5-step structured diagnosis. What do you check first and why?"
+      },
+      {
+        d:29,label:"Launch planning + technical debt",
+        skill:"Execution",
+        color:"#FCEBEB",textColor:"#A32D2D",
+        focus:"Launching a feature and managing engineering relationships",
+        study:["Soft launch vs hard launch","What is a feature flag?","What is a product launch checklist?","How to balance feature work vs tech debt in a roadmap"],
+        task:"Write a launch plan for 'QR code payments' in an existing app. Include pre-launch, launch day, post-launch."
+      },
+      {
+        d:30,label:"Day 30 — final output day",
+        rest:false,
+        special:true,
+        skill:"Everything",
+        color:"#1D9E75",textColor:"#ffffff",
+        focus:"Prove you're ready",
+        study:["Review every task you completed this month","Pick your 3 strongest outputs — these are your portfolio","Write a 100-word 'PM pitch' about yourself for an interview","Apply to at least 3 internships today if you haven't already"],
+        task:"Send your best product teardown or PRD to one PM or founder and ask for 10 minutes of feedback. No excuses."
+      }
+    ]
+  }
+];
+
+let done = {};
+try { done = JSON.parse(localStorage.getItem('pm_30day') || '{}'); } catch(e){}
+function save(){try{localStorage.setItem('pm_30day',JSON.stringify(done));}catch(e){}}
+
+function updateProg(){
+  const total = 30;
+  const c = Object.values(done).filter(Boolean).length;
+  document.getElementById('prog').style.width=(c/total*100)+'%';
+  document.getElementById('prog-label').textContent = c+' / 30 days done';
+}
+
+function showWeek(n, btn){
+  document.querySelectorAll('.wbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const w = WEEKS[n-1];
+  const c = document.getElementById('week-content');
+  c.innerHTML = `
+    <div class="week-header">
+      <div class="week-title">${w.title}</div>
+      <div class="week-sub">${w.sub}</div>
+      <div class="week-theme" style="background:${w.themeColor};color:${w.themeText}">
+        <i class="ti ${w.themeIcon}" style="font-size:14px" aria-hidden="true"></i>
+        ${w.theme}
+      </div>
+    </div>
+    <div class="days-grid">
+      ${w.days.map(day => renderDay(day)).join('')}
+    </div>
+  `;
+  updateProg();
+}
+
+function renderDay(day){
+  if(day.rest && !day.special){
+    const icon = day.milestone ? 'ti-trophy' : 'ti-moon';
+    const label = day.milestone ? 'Milestone checkpoint' : 'Rest & review';
+    return `
+      <div class="rest-card">
+        <div class="rest-icon"><i class="ti ${icon}" style="font-size:18px;color:var(--color-text-secondary)" aria-hidden="true"></i></div>
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--color-text-primary)">Day ${day.d} — ${label}</div>
+          <div class="rest-text" style="margin-top:4px">${day.restNote}</div>
+        </div>
+      </div>`;
+  }
+  const isDone = !!done['d'+day.d];
+  const isSpecial = day.special;
+  return `
+    <div class="day-card${isSpecial?' special':''}">
+      <div class="day-top" onclick="toggleDay(this,'d${day.d}')">
+        <div class="day-num" style="background:${day.color};color:${day.textColor}">
+          ${isDone?'✓':day.d}
+        </div>
+        <div class="day-info">
+          <div class="day-label" style="${isSpecial?'color:'+day.textColor:''}">${day.label}</div>
+          <div class="day-focus">${day.focus}</div>
+        </div>
+        <div class="day-tag" style="background:${day.color};color:${day.textColor}">${day.skill}</div>
+        <i class="ti ti-chevron-down day-chevron" aria-hidden="true"></i>
+      </div>
+      <div class="day-detail" id="d${day.d}_detail">
+        <div class="detail-section">
+          <div class="detail-label">Research today</div>
+          <ul class="detail-list">${day.study.map(s=>`<li>${s}</li>`).join('')}</ul>
+        </div>
+        <div class="task-chip">
+          <div class="task-chip-label"><i class="ti ti-bolt" style="font-size:11px" aria-hidden="true"></i> Task</div>
+          <div class="task-chip-text">${day.task}</div>
+        </div>
+        <div class="check-row">
+          <div class="check-box ${isDone?'done':''}" onclick="markDone('d${day.d}',this)" id="chk_d${day.d}"></div>
+          <div class="check-text">Mark day ${day.d} as done</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function toggleDay(header, id){
+  const detail = document.getElementById(id+'_detail');
+  if(!detail) return;
+  const chevron = header.querySelector('.day-chevron');
+  detail.classList.toggle('open');
+  if(chevron) chevron.style.transform = detail.classList.contains('open') ? 'rotate(180deg)' : '';
+}
+
+function markDone(key, el){
+  done[key] = !done[key];
+  el.classList.toggle('done', done[key]);
+  const numEl = el.closest('.day-card')?.querySelector('.day-num');
+  if(numEl) numEl.textContent = done[key] ? '✓' : key.replace('d','');
+  save();
+  updateProg();
+}
+
+showWeek(1, document.querySelector('.wbtn.active'));
+</script>
+</body>
+</html>
